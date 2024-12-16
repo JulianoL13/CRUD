@@ -4,6 +4,10 @@ import com.crudtest.crud.client.dto.ClientDTO;
 import com.crudtest.crud.client.dto.ClientMutableDTO;
 import com.crudtest.crud.client.entities.Client;
 import com.crudtest.crud.client.repository.ClientRepository;
+import com.crudtest.crud.client.service.exceptions.DatabaseException;
+import com.crudtest.crud.client.service.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +31,7 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public ClientMutableDTO findById(Long id) {
-        Client client = clientRepository.findById(id).orElse(null);
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found"));
         return new ClientMutableDTO(client);
     }
     @Transactional
