@@ -1,10 +1,7 @@
 package com.crudtest.crud.client.dto;
 
 import com.crudtest.crud.client.entities.Client;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +12,7 @@ public class ClientDTO {
     @NotBlank(message = "field required")
     private String name;
     @NotBlank(message = "field required")
+    @Size(min = 11, max = 11, message = "invalid cpf")
     private String cpf;
     @PositiveOrZero(message = "income should be zero or greater than zero")
     private double income;
