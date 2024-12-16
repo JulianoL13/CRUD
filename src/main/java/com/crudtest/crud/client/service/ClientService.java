@@ -49,10 +49,15 @@ public class ClientService {
 
     @Transactional
     public ClientMutableDTO update(Long id, ClientMutableDTO clientMutableDTO) {
-        Client client = clientRepository.getReferenceById(id);
-        maskSensitiveFields(clientMutableDTO, client);
-        client = clientRepository.save(client);
-        return new ClientMutableDTO(client);
+        try {
+            Client client = clientRepository.getReferenceById(id);
+            maskSensitiveFields(clientMutableDTO, client);
+            client = clientRepository.save(client);
+            return new ClientMutableDTO(client);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Client not found");
+        }
+
     }
 
     @Transactional
