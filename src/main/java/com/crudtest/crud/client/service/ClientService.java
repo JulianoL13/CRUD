@@ -36,10 +36,15 @@ public class ClientService {
     }
     @Transactional
     public ClientMutableDTO insert(ClientDTO clientDTO) {
-        Client client = new Client();
-        mapDTOToEntity(clientDTO, client);
-        Client savedEntity = clientRepository.save(client);
-        return new ClientMutableDTO(savedEntity);
+        try {
+            Client client = new Client();
+            mapDTOToEntity(clientDTO, client);
+            Client savedEntity = clientRepository.save(client);
+            return new ClientMutableDTO(savedEntity);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 
     @Transactional
